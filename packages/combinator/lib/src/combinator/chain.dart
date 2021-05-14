@@ -67,6 +67,7 @@ class _Chain<T> extends ListParser<T> {
         results.add(result.value!);
       } else {
         //print("NULL");
+        results.add("NULL" as T);
       }
 
       if (result.span != null) {
