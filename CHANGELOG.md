@@ -39,6 +39,9 @@
 * Migrated angel_orm_test to 3.0.0 (0/0 tests passed)
 * Migrated angel_orm_postgres to 3.0.0 (51/54 tests passed)
 * Update orm-sdk-2.12.x boilerplate (in progress) <= Milestone 2
+* Migrated angel_auth_oauth2 to 3.0.0
+* Migrated angel_auth_cache to 4.0.0
+* Migrated angel_auth_cors to 4.0.0  (10/15 tests passed)
 
 
 # 3.0.0 (Non NNBD)
@@ -76,7 +79,7 @@
 * Update orm-sdk-2.12.x boilerplate
 * Updated angel_auth_oauth2 to 3.0.0
 * Updated angel_auth_cache to 3.0.0
-* Updated angel_auth_cors to 3.0.0
+* Updated angel_auth_cors to 3.0.0 (15/15 tests passed)
 * Updated angel_container_generator to 2.0.0
 * Updated angel_file_service to 3.0.0
 * Updated angel_eventsource to 2.0.0 (use a fork of eventsource)

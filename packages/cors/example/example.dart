@@ -43,7 +43,7 @@ Future configureServer(Angel app) async {
   app.fallback(dynamicCors((req, res) {
     return CorsOptions(
       origin: [
-        req.headers.value('origin') ?? 'https://pub.dartlang.org',
+        req.headers!.value('origin') ?? 'https://pub.dartlang.org',
         RegExp(r'\.com$'),
       ],
     );
