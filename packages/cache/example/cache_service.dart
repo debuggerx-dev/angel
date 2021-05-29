@@ -13,7 +13,7 @@ main() async {
         print(
             'Fetched directly from the underlying service at ${new DateTime.now()}!');
         return ['foo', 'bar', 'baz'];
-      }, read: (id, [params]) {
+      }, read: (dynamic id, [params]) {
         return {id: '$id at ${new DateTime.now()}'};
       }),
     ),

@@ -9,9 +9,9 @@ import 'package:test/test.dart';
 
 main() async {
   group('no timeout', () {
-    TestClient client;
-    DateTime lastModified;
-    http.Response response1, response2;
+    late TestClient client;
+    late DateTime lastModified;
+    late http.Response response1, response2;
 
     setUp(() async {
       var app = new Angel();
@@ -29,8 +29,8 @@ main() async {
       });
 
       app.addRoute('PURGE', '*', (req, res) {
-        cache.purge(req.uri.path);
-        print('Purged ${req.uri.path}');
+        cache.purge(req.uri!.path);
+        print('Purged ${req.uri!.path}');
       });
 
       app.responseFinalizers.add(cache.responseFinalizer);
@@ -38,14 +38,15 @@ main() async {
       var oldHandler = app.errorHandler;
       app.errorHandler = (e, req, res) {
         if (e.error == null) return oldHandler(e, req, res);
-        return Zone.current.handleUncaughtError(e.error, e.stackTrace);
+        return Zone.current
+            .handleUncaughtError(e.error as Object, e.stackTrace!);
       };
 
       client = await connectTo(app);
       response1 = await client.get(Uri.parse('/date.txt'));
       response2 = await client.get(Uri.parse('/date.txt'));
       print(response2.headers);
-      lastModified = HttpDate.parse(response2.headers['last-modified']);
+      lastModified = HttpDate.parse(response2.headers['last-modified']!);
       print('Response 1 status: ${response1.statusCode}');
       print('Response 2 status: ${response2.statusCode}');
       print('Response 1 body: ${response1.body}');

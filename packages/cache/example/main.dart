@@ -23,8 +23,8 @@ main() async {
   app.addRoute('PURGE', '*', (req, res) {
     if (req.ip != '127.0.0.1') throw AngelHttpException.forbidden();
 
-    cache.purge(req.uri.path);
-    print('Purged ${req.uri.path}');
+    cache.purge(req.uri!.path);
+    print('Purged ${req.uri!.path}');
   });
 
   // The response finalizer that actually saves the content
