@@ -7,7 +7,7 @@ import 'package:test/test.dart';
 import 'common.dart';
 
 void main() {
-  TestClient client;
+  late TestClient client;
 
   setUp(() async {
     var app = Angel();
@@ -30,7 +30,7 @@ void main() {
 
   test('authenticate via client credentials', () async {
     var response = await client.post(
-      '/oauth2/token',
+      Uri.parse('oauth2/token'),
       headers: {
         'Authorization': 'Basic ' + base64Url.encode('foo:bar'.codeUnits),
       },
@@ -58,7 +58,7 @@ void main() {
 
   test('force correct id', () async {
     var response = await client.post(
-      '/oauth2/token',
+      Uri.parse('/oauth2/token'),
       headers: {
         'Authorization': 'Basic ' + base64Url.encode('fooa:bar'.codeUnits),
       },
@@ -73,7 +73,7 @@ void main() {
 
   test('force correct secret', () async {
     var response = await client.post(
-      '/oauth2/token',
+      Uri.parse('/oauth2/token'),
       headers: {
         'Authorization': 'Basic ' + base64Url.encode('foo:bara'.codeUnits),
       },
@@ -90,19 +90,19 @@ void main() {
 class _AuthorizationServer
     extends AuthorizationServer<PseudoApplication, PseudoUser> {
   @override
-  PseudoApplication findClient(String clientId) {
+  PseudoApplication? findClient(String? clientId) {
     return clientId == pseudoApplication.id ? pseudoApplication : null;
   }
 
   @override
   Future<bool> verifyClient(
-      PseudoApplication client, String clientSecret) async {
+      PseudoApplication client, String? clientSecret) async {
     return client.secret == clientSecret;
   }
 
   @override
   Future<AuthorizationTokenResponse> clientCredentialsGrant(
-      PseudoApplication client, RequestContext req, ResponseContext res) async {
+      PseudoApplication? client, RequestContext req, ResponseContext res) async {
     return AuthorizationTokenResponse('foo');
   }
 }

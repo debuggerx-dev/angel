@@ -6,8 +6,8 @@ import 'package:angel_validate/angel_validate.dart';
 import 'package:test/test.dart';
 import 'common.dart';
 
-main() {
-  TestClient client;
+void main() {
+  late TestClient client;
 
   setUp(() async {
     var app = Angel();
@@ -30,7 +30,8 @@ main() {
 
   test('authenticate via implicit grant', () async {
     var response = await client.get(
-      '/oauth2/authorize?response_type=token&client_id=foo&redirect_uri=http://foo.com&state=bar',
+      Uri.parse(
+          '/oauth2/authorize?response_type=token&client_id=foo&redirect_uri=http://foo.com&state=bar'),
     );
 
     print('Headers: ${response.headers}');
@@ -47,27 +48,27 @@ main() {
 class _AuthorizationServer
     extends AuthorizationServer<PseudoApplication, PseudoUser> {
   @override
-  PseudoApplication findClient(String clientId) {
+  PseudoApplication? findClient(String? clientId) {
     return clientId == pseudoApplication.id ? pseudoApplication : null;
   }
 
   @override
   Future<bool> verifyClient(
-      PseudoApplication client, String clientSecret) async {
+      PseudoApplication client, String? clientSecret) async {
     return client.secret == clientSecret;
   }
 
   @override
   Future<void> requestAuthorizationCode(
       PseudoApplication client,
-      String redirectUri,
+      String? redirectUri,
       Iterable<String> scopes,
       String state,
       RequestContext req,
       ResponseContext res,
       bool implicit) async {
     var tok = AuthorizationTokenResponse('foo');
-    var uri = completeImplicitGrant(tok, Uri.parse(redirectUri), state: state);
+    var uri = completeImplicitGrant(tok, Uri.parse(redirectUri!), state: state);
     return res.redirect(uri);
   }
 }
