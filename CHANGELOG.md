@@ -43,7 +43,8 @@
 * Migrated angel_auth_cache to 4.0.0 (0/7 tests passed)
 * Migrated angel_auth_cors to 4.0.0  (10/15 tests passed)
 * Migrated angel_oauth2 to 4.0.0 (17/25 tests passed)
-
+* Migrated angel_proxy to 4.0.0 (5/7 tests passed)
+* Migrated angel_file_service to 4.0.0 (17/25 tests passed)
 
 # 3.0.0 (Non NNBD)
 * Changed Dart SDK requirements for all packages to ">=2.10.0 <3.0.0"
@@ -86,6 +87,7 @@
 * Updated angel_file_service to 3.0.0
 * Updated angel_eventsource to 2.0.0 (use a fork of eventsource)
 * Updated angel_auth_twitter to 3.0.0 (use a fork of twitter and oauth)
+* Updated angel_proxy to 4.0.0 (5/7 tests passed)
 
 # 2.2.0
 * Changed Dart SDK requirements for all packages to ">=2.10.0 <2.12.0"

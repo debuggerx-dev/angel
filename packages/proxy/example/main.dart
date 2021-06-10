@@ -6,7 +6,7 @@ import 'package:logging/logging.dart';
 
 final Duration timeout = Duration(seconds: 5);
 
-main() async {
+void main() async {
   var app = Angel();
 
   // Forward any /api requests to pub.
@@ -16,7 +16,7 @@ main() async {
     publicPath: '/pub',
     timeout: timeout,
   );
-  app.all("/pub/*", pubProxy.handleRequest);
+  app.all('/pub/*', pubProxy.handleRequest);
 
   // Surprise! We can also proxy WebSockets.
   //
