@@ -3,10 +3,10 @@ import 'package:file/file.dart';
 import 'package:file/memory.dart';
 import 'package:test/test.dart';
 
-main() {
+void main() {
   MemoryFileSystem fs;
   File dbFile;
-  JsonFileService service;
+  late JsonFileService service;
 
   setUp(() async {
     fs = new MemoryFileSystem();
