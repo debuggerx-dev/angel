@@ -8,7 +8,7 @@ class GraphQLObjectType
   final String name;
 
   /// An optional description of this type; useful for tools like GraphiQL.
-  final String description;
+  final String? description;
 
   /// The list of fields that an object of this type is expected to have.
   final List<GraphQLObjectField> fields = [];
@@ -39,7 +39,7 @@ class GraphQLObjectType
   }
 
   /// Converts [this] into a [GraphQLInputObjectType].
-  GraphQLInputObjectType toInputObject(String name, {String description}) {
+  GraphQLInputObjectType toInputObject(String name, {String? description}) {
     return new GraphQLInputObjectType(name,
         description: description ?? this.description,
         inputFields: fields.map((f) => new GraphQLInputObjectField(
@@ -92,7 +92,7 @@ class GraphQLObjectType
     }
 
     input.keys.forEach((k) {
-      var field = fields.firstWhere((f) => f.name == k, orElse: () => null);
+      var field = fields.firstWhereOrNull((f) => f.name == k);
 
       if (field == null) {
         errors.add(
@@ -118,7 +118,7 @@ class GraphQLObjectType
   @override
   Map<String, dynamic> serialize(Map value) {
     return value.keys.fold<Map<String, dynamic>>({}, (out, k) {
-      var field = fields.firstWhere((f) => f.name == k, orElse: () => null);
+      var field = fields.firstWhereOrNull((f) => f.name == k);
       if (field == null)
         throw new UnsupportedError(
             'Cannot serialize field "$k", which was not defined in the schema.');
@@ -129,7 +129,7 @@ class GraphQLObjectType
   @override
   Map<String, dynamic> deserialize(Map value) {
     return value.keys.fold<Map<String, dynamic>>({}, (out, k) {
-      var field = fields.firstWhere((f) => f.name == k, orElse: () => null);
+      var field = fields.firstWhereOrNull((f) => f.name == k);
       if (field == null)
         throw new UnsupportedError('Unexpected field "$k" encountered in map.');
       return out..[k.toString()] = field.deserialize(value[k]);
@@ -164,10 +164,8 @@ class GraphQLObjectType
 }
 
 Map<String, dynamic> _foldToStringDynamic(Map map) {
-  return map == null
-      ? null
-      : map.keys.fold<Map<String, dynamic>>(
-          <String, dynamic>{}, (out, k) => out..[k.toString()] = map[k]);
+  return map.keys.fold<Map<String, dynamic>>(
+      <String, dynamic>{}, (out, k) => out..[k.toString()] = map[k]);
 }
 
 /// A special [GraphQLType] that specifies the shape of an object that can only be used as an input to a [GraphQLField].
@@ -182,7 +180,7 @@ class GraphQLInputObjectType
   final String name;
 
   /// An optional type of this type, which is useful for tools like GraphiQL.
-  final String description;
+  final String? description;
 
   /// A list of the fields that an input object of this type is expected to have.
   final List<GraphQLInputObjectField> inputFields = [];
@@ -190,7 +188,7 @@ class GraphQLInputObjectType
   GraphQLInputObjectType(this.name,
       {this.description,
       Iterable<GraphQLInputObjectField> inputFields: const []}) {
-    this.inputFields.addAll(inputFields ?? const <GraphQLInputObjectField>[]);
+    this.inputFields.addAll(inputFields);
   }
 
   @override
@@ -211,8 +209,7 @@ class GraphQLInputObjectType
     }
 
     input.keys.forEach((k) {
-      var field =
-          inputFields.firstWhere((f) => f.name == k, orElse: () => null);
+      var field = inputFields.firstWhereOrNull((f) => f.name == k);
 
       if (field == null) {
         errors.add(
@@ -238,8 +235,7 @@ class GraphQLInputObjectType
   @override
   Map<String, dynamic> serialize(Map value) {
     return value.keys.fold<Map<String, dynamic>>({}, (out, k) {
-      var field =
-          inputFields.firstWhere((f) => f.name == k, orElse: () => null);
+      var field = inputFields.firstWhereOrNull((f) => f.name == k);
       if (field == null)
         throw new UnsupportedError(
             'Cannot serialize field "$k", which was not defined in the schema.');
@@ -250,8 +246,7 @@ class GraphQLInputObjectType
   @override
   Map<String, dynamic> deserialize(Map value) {
     return value.keys.fold<Map<String, dynamic>>({}, (out, k) {
-      var field =
-          inputFields.firstWhere((f) => f.name == k, orElse: () => null);
+      var field = inputFields.firstWhereOrNull((f) => f.name == k);
       if (field == null)
         throw new UnsupportedError('Unexpected field "$k" encountered in map.');
       return out..[k.toString()] = field.type.deserialize(value[k]);
@@ -281,10 +276,10 @@ class GraphQLInputObjectField<Value, Serialized> {
   final GraphQLType<Value, Serialized> type;
 
   /// A description of this field, which is useful for tools like GraphiQL.
-  final String description;
+  final String? description;
 
   /// An optional default value for this field in an input object.
-  final Value defaultValue;
+  final Value? defaultValue;
 
   GraphQLInputObjectField(this.name, this.type,
       {this.description, this.defaultValue});

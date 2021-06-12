@@ -8,10 +8,10 @@ part of graphql_schema.src.schema;
 /// [GraphQLType] that serializes objects into `String`s.
 abstract class GraphQLType<Value, Serialized> {
   /// The name of this type.
-  String get name;
+  String? get name;
 
   /// A description of this type, which, while optional, can be very useful in tools like GraphiQL.
-  String get description;
+  String? get description;
 
   /// Serializes an arbitrary input value.
   Serialized serialize(Value value);
@@ -20,7 +20,7 @@ abstract class GraphQLType<Value, Serialized> {
   Value deserialize(Serialized serialized);
 
   /// Attempts to cast a dynamic [value] into a [Serialized] instance.
-  Serialized convert(value) => value as Serialized;
+  Serialized? convert(value) => value as Serialized?;
 
   /// Performs type coercion against an [input] value, and returns a list of errors if the validation was unsuccessful.
   ValidationResult<Serialized> validate(String key, Serialized input);
@@ -32,7 +32,7 @@ abstract class GraphQLType<Value, Serialized> {
   GraphQLType<Value, Serialized> coerceToInputObject();
 
   @override
-  String toString() => name;
+  String toString() => name!;
 }
 
 /// Shorthand to create a [GraphQLListType].
@@ -49,7 +49,7 @@ class GraphQLListType<Value, Serialized>
   GraphQLListType(this.ofType);
 
   @override
-  List<Serialized> convert(value) {
+  List<Serialized>? convert(value) {
     if (value is Iterable) {
       return value.cast<Serialized>().toList();
     } else {
@@ -58,7 +58,7 @@ class GraphQLListType<Value, Serialized>
   }
 
   @override
-  String get name => null;
+  String? get name => null;
 
   @override
   String get description =>
@@ -110,7 +110,7 @@ class GraphQLListType<Value, Serialized>
 
 abstract class _NonNullableMixin<Value, Serialized>
     implements GraphQLType<Value, Serialized> {
-  GraphQLType<Value, Serialized> _nonNullableCache;
+  GraphQLType<Value, Serialized>? _nonNullableCache;
 
   GraphQLType<Value, Serialized> nonNullable() => _nonNullableCache ??=
       new GraphQLNonNullableType<Value, Serialized>._(this);
@@ -124,7 +124,7 @@ class GraphQLNonNullableType<Value, Serialized>
   GraphQLNonNullableType._(this.ofType);
 
   @override
-  String get name => null; //innerType.name;
+  String? get name => null; //innerType.name;
 
   @override
   String get description =>

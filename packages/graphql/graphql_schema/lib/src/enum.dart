@@ -2,8 +2,8 @@ part of graphql_schema.src.schema;
 
 /// Shorthand for building a [GraphQLEnumType].
 GraphQLEnumType enumType<Value>(String name, Map<String, Value> values,
-    {String description}) {
-  return new GraphQLEnumType<Value>(
+    {String? description}) {
+  return new GraphQLEnumType<Value?>(
       name, values.keys.map((k) => new GraphQLEnumValue(k, values[k])).toList(),
       description: description);
 }
@@ -11,7 +11,7 @@ GraphQLEnumType enumType<Value>(String name, Map<String, Value> values,
 /// Shorthand for building a [GraphQLEnumType] where all the possible values
 /// are mapped to Dart strings.
 GraphQLEnumType<String> enumTypeFromStrings(String name, List<String> values,
-    {String description}) {
+    {String? description}) {
   return new GraphQLEnumType<String>(
       name, values.map((s) => new GraphQLEnumValue(s, s)).toList(),
       description: description);
@@ -31,13 +31,13 @@ class GraphQLEnumType<Value> extends GraphQLScalarType<Value, String>
   final List<GraphQLEnumValue<Value>> values;
 
   /// A description of this enum type, for tools like GraphiQL.
-  final String description;
+  final String? description;
 
   GraphQLEnumType(this.name, this.values, {this.description});
 
   @override
   String serialize(Value value) {
-    if (value == null) return null;
+    //if (value == null) return null;
     return values.firstWhere((v) => v.value == value).name;
   }
 
@@ -49,10 +49,10 @@ class GraphQLEnumType<Value> extends GraphQLScalarType<Value, String>
   @override
   ValidationResult<String> validate(String key, String input) {
     if (!values.any((v) => v.name == input)) {
-      if (input == null) {
-        return new ValidationResult<String>._failure(
-            ['The enum "$name" does not accept null values.']);
-      }
+      //if (input == null) {
+      //  return new ValidationResult<String>._failure(
+      //      ['The enum "$name" does not accept null values.']);
+      //}
 
       return new ValidationResult<String>._failure(
           ['"$input" is not a valid value for the enum "$name".']);
@@ -83,10 +83,10 @@ class GraphQLEnumValue<Value> {
   final Value value;
 
   /// An optional description of this value; useful for tools like GraphiQL.
-  final String description;
+  final String? description;
 
   /// The reason, if any, that this value was deprecated, if it indeed is deprecated.
-  final String deprecationReason;
+  final String? deprecationReason;
 
   GraphQLEnumValue(this.name, this.value,
       {this.description, this.deprecationReason});
