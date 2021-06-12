@@ -45,6 +45,7 @@
 * Migrated angel_oauth2 to 4.0.0 (17/25 tests passed)
 * Migrated angel_proxy to 4.0.0 (5/7 tests passed)
 * Migrated angel_file_service to 4.0.0 (6/6 tests passed)
+* Migrated graphql_parser to 2.0.0 (55/55 tests passed)
 
 # 3.0.0 (Non NNBD)
 * Changed Dart SDK requirements for all packages to ">=2.10.0 <3.0.0"
