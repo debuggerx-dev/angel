@@ -48,13 +48,13 @@ GraphQLSchema graphQLSchema(
         {required GraphQLObjectType queryType,
         GraphQLObjectType? mutationType,
         GraphQLObjectType? subscriptionType}) =>
-    new GraphQLSchema(
+    GraphQLSchema(
         queryType: queryType,
         mutationType: mutationType,
         subscriptionType: subscriptionType);
 
 /// A default resolver that always returns `null`.
-resolveToNull(_, __) => null;
+Null resolveToNull(_, __) => null;
 
 /// An exception that occurs during execution of a GraphQL query.
 class GraphQLException implements Exception {
@@ -64,17 +64,17 @@ class GraphQLException implements Exception {
   GraphQLException(this.errors);
 
   factory GraphQLException.fromMessage(String message) {
-    return new GraphQLException([
-      new GraphQLExceptionError(message),
+    return GraphQLException([
+      GraphQLExceptionError(message),
     ]);
   }
 
   factory GraphQLException.fromSourceSpan(String message, FileSpan span) {
-    return new GraphQLException([
-      new GraphQLExceptionError(
+    return GraphQLException([
+      GraphQLExceptionError(
         message,
         locations: [
-          new GraphExceptionErrorLocation.fromSourceLocation(span.start),
+          GraphExceptionErrorLocation.fromSourceLocation(span.start),
         ],
       ),
     ]);
@@ -100,7 +100,7 @@ class GraphQLExceptionError {
   /// triggered an error.
   final List<GraphExceptionErrorLocation> locations;
 
-  GraphQLExceptionError(this.message, {this.locations: const []});
+  GraphQLExceptionError(this.message, {this.locations = const []});
 
   Map<String, dynamic> toJson() {
     var out = <String, dynamic>{'message': message};
@@ -122,7 +122,7 @@ class GraphExceptionErrorLocation {
 
   factory GraphExceptionErrorLocation.fromSourceLocation(
       SourceLocation location) {
-    return new GraphExceptionErrorLocation(location.line, location.column);
+    return GraphExceptionErrorLocation(location.line, location.column);
   }
 
   Map<String, int> toJson() {
@@ -130,7 +130,7 @@ class GraphExceptionErrorLocation {
   }
 }
 
-typedef GraphQLType GraphDocumentationTypeProvider();
+typedef GraphDocumentationTypeProvider = GraphQLType Function();
 
 /// A metadata annotation used to provide documentation to `package:graphql_server`.
 class GraphQLDocumentation {
@@ -152,7 +152,7 @@ class GraphQLDocumentation {
 }
 
 /// The canonical instance.
-const GraphQLClass graphQLClass = const GraphQLClass._();
+const GraphQLClass graphQLClass = GraphQLClass._();
 
 /// Signifies that a class should statically generate a [GraphQLSchema].
 class GraphQLClass {

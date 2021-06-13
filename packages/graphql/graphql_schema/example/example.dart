@@ -1,6 +1,6 @@
 import 'package:graphql_schema/graphql_schema.dart';
 
-final GraphQLSchema todoSchema = new GraphQLSchema(
+final GraphQLSchema todoSchema = GraphQLSchema(
   queryType: objectType('Todo', fields: [
     field(
       'text',
@@ -15,7 +15,7 @@ final GraphQLSchema todoSchema = new GraphQLSchema(
   ]),
 );
 
-main() {
+void main() {
   // Validation
   var validation = todoSchema.queryType!.validate(
     '@root',
@@ -36,6 +36,6 @@ main() {
   // Serialization
   print(todoSchema.queryType!.serialize({
     'text': 'Clean your room!',
-    'created_at': new DateTime.now().subtract(new Duration(days: 10))
+    'created_at': DateTime.now().subtract(Duration(days: 10))
   }));
 }

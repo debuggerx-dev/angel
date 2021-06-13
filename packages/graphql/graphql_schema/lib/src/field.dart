@@ -1,7 +1,7 @@
 part of graphql_schema.src.schema;
 
 /// Typedef for a function that resolves the value of a [GraphQLObjectField], whether asynchronously or not.
-typedef FutureOr<Value>? GraphQLFieldResolver<Value, Serialized>(
+typedef GraphQLFieldResolver<Value, Serialized> = FutureOr<Value> Function(
     Serialized serialized, Map<String, dynamic> argumentValues);
 
 /// A field on a [GraphQLObjectType].
@@ -28,7 +28,7 @@ class GraphQLObjectField<Value, Serialized> {
   final String? deprecationReason;
 
   GraphQLObjectField(this.name, this.type,
-      {Iterable<GraphQLFieldInput> arguments: const <GraphQLFieldInput>[],
+      {Iterable<GraphQLFieldInput> arguments = const <GraphQLFieldInput>[],
       required this.resolve,
       this.deprecationReason,
       this.description}) {
@@ -36,7 +36,7 @@ class GraphQLObjectField<Value, Serialized> {
 //    assert(
 //        resolve != null, 'GraphQL fields must specify a `resolve` callback.');
 //    this.inputs.addAll(arguments ?? <GraphQLFieldInput>[]);
-    this.inputs.addAll(arguments);
+    inputs.addAll(arguments);
   }
 
   /// Returns `true` if this field has a [deprecationReason].

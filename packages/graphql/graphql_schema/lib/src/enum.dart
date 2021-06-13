@@ -3,8 +3,8 @@ part of graphql_schema.src.schema;
 /// Shorthand for building a [GraphQLEnumType].
 GraphQLEnumType enumType<Value>(String name, Map<String, Value> values,
     {String? description}) {
-  return new GraphQLEnumType<Value?>(
-      name, values.keys.map((k) => new GraphQLEnumValue(k, values[k])).toList(),
+  return GraphQLEnumType<Value?>(
+      name, values.keys.map((k) => GraphQLEnumValue(k, values[k])).toList(),
       description: description);
 }
 
@@ -12,8 +12,8 @@ GraphQLEnumType enumType<Value>(String name, Map<String, Value> values,
 /// are mapped to Dart strings.
 GraphQLEnumType<String> enumTypeFromStrings(String name, List<String> values,
     {String? description}) {
-  return new GraphQLEnumType<String>(
-      name, values.map((s) => new GraphQLEnumValue(s, s)).toList(),
+  return GraphQLEnumType<String>(
+      name, values.map((s) => GraphQLEnumValue(s, s)).toList(),
       description: description);
 }
 
@@ -23,6 +23,7 @@ GraphQLEnumType<String> enumTypeFromStrings(String name, List<String> values,
 class GraphQLEnumType<Value> extends GraphQLScalarType<Value, String>
     with _NonNullableMixin<Value, String> {
   /// The name of this enum type.
+  @override
   final String name;
 
   /// The defined set of possible values for this type.
@@ -31,6 +32,7 @@ class GraphQLEnumType<Value> extends GraphQLScalarType<Value, String>
   final List<GraphQLEnumValue<Value>> values;
 
   /// A description of this enum type, for tools like GraphiQL.
+  @override
   final String? description;
 
   GraphQLEnumType(this.name, this.values, {this.description});
@@ -54,11 +56,11 @@ class GraphQLEnumType<Value> extends GraphQLScalarType<Value, String>
       //      ['The enum "$name" does not accept null values.']);
       //}
 
-      return new ValidationResult<String>._failure(
+      return ValidationResult<String>._failure(
           ['"$input" is not a valid value for the enum "$name".']);
     }
 
-    return new ValidationResult<String>._ok(input);
+    return ValidationResult<String>._ok(input);
   }
 
   @override
