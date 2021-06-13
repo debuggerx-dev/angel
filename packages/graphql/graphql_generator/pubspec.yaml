@@ -12,12 +12,12 @@ dependencies:
       url: https://github.com/dukefirehawk/angel.git
       ref: sdk-2.12.x_nnbd
       path: packages/model
-  angel_serialize_generator: #^2.0.0
+  angel_serialize_generator:
     git: 
       url: https://github.com/dukefirehawk/angel.git
       ref: sdk-2.12.x_nnbd
       path: packages/serialize/angel_serialize_generator
-  graphql_schema: #^1.0.2
+  graphql_schema:
     git: 
       url: https://github.com/dukefirehawk/angel.git
       ref: sdk-2.12.x_nnbd

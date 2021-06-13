@@ -4,7 +4,7 @@ description: The fastest + easiest way to get a GraphQL backend in Dart, using A
 homepage: https://github.com/angel-dart/graphql
 publish_to: none
 environment:
-  sdk: '>=2.10.0 <3.0.0'
+  sdk: '>=2.12.0 <3.0.0'
 dependencies:
   angel_file_service:
     git: 
@@ -36,18 +36,22 @@ dependencies:
       url: https://github.com/dukefirehawk/angel.git
       ref: sdk-2.12.x_nnbd
       path: packages/graphql/graphql_schema
-  graphql_server: #^1.0.0
-    path: ../graphql_server
-  http_parser: ^3.0.0
-  web_socket_channel: ^1.0.0
+  graphql_server:
+    git: 
+      url: https://github.com/dukefirehawk/angel.git
+      ref: sdk-2.12.x_nnbd
+      path: packages/graphql/graphql_server
+  http_parser: ^4.0.0
+  web_socket_channel: ^2.1.0
+  collection: ^1.15.0-nullsafety.4
 dev_dependencies:
   angel_serialize:
     git: 
       url: https://github.com/dukefirehawk/angel.git
       ref: sdk-2.12.x_nnbd
       path: packages/serialize/angel_serialize
-  file: ^5.0.0
-  logging: ^0.11.0
-  pedantic: ^1.0.0
+  file: ^6.1.1
+  logging: ^1.0.1
+  pedantic: ^1.11.0
 
  
