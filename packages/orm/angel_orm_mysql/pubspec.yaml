@@ -1,5 +1,5 @@
 name: angel_orm_mysql
-version: 1.0.0
+version: 2.0.0
 description: MySQL support for Angel's ORM. Includes functionality for querying and transactions.
 publish_to: none
 environment:
