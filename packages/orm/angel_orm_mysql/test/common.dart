@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:angel_orm/angel_orm.dart';
 import 'package:angel_orm_mysql/angel_orm_mysql.dart';
 import 'package:logging/logging.dart';
-import 'package:sqljocky5/sqljocky.dart';
+import 'package:galileo_sqljocky5/sqljocky.dart';
 
 FutureOr<QueryExecutor> Function() my(Iterable<String> schemas) {
   return () => connectToMySql(schemas);

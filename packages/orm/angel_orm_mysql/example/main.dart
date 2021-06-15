@@ -4,10 +4,11 @@ import 'package:angel_orm/angel_orm.dart';
 import 'package:angel_orm_mysql/angel_orm_mysql.dart';
 import 'package:angel_serialize/angel_serialize.dart';
 import 'package:logging/logging.dart';
-import 'package:sqljocky5/sqljocky.dart';
+import 'package:galileo_sqljocky5/sqljocky.dart';
+import 'package:optional/optional.dart';
 part 'main.g.dart';
 
-main() async {
+void main() async {
   hierarchicalLoggingEnabled = true;
   Logger.root
     ..level = Level.ALL
@@ -24,20 +25,20 @@ main() async {
     ..text = 'Clean your room!'
     ..isComplete = false;
 
-  var todo = await query.insert(executor);
-  print(todo.toJson());
+  Optional<Todo> todo = await query.insert(executor);
+  print(todo.value.toJson());
 
-  var query2 = TodoQuery()..where.id.equals(todo.idAsInt);
-  var todo2 = await query2.getOne(executor);
-  print(todo2.toJson());
+  var query2 = TodoQuery()..where!.id.equals(todo.value.idAsInt!);
+  Optional<Todo> todo2 = await query2.getOne(executor);
+  print(todo2.value.toJson());
   print(todo == todo2);
 }
 
 @serializable
 @orm
 abstract class _Todo extends Model {
-  String get text;
+  String? get text;
 
   @DefaultsTo(false)
-  bool isComplete;
+  bool? isComplete;
 }
