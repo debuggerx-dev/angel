@@ -6,7 +6,7 @@ import 'package:resp_client/resp_commands.dart';
 
 /// An Angel service that reads and writes JSON within a Redis store.
 class RedisService extends Service<String, Map<String, dynamic>> {
-  final RespCommands respCommands;
+  final RespCommandsTier2 respCommands;
 
   /// An optional string prefixed to keys before they are inserted into Redis.
   ///
@@ -38,8 +38,7 @@ class RedisService extends Service<String, Map<String, dynamic>> {
     var value = await respCommands.get(_applyPrefix(id));
 
     if (value == null) {
-      throw new AngelHttpException.notFound(
-          message: 'No record found for ID $id');
+      throw AngelHttpException.notFound(message: 'No record found for ID $id');
     } else {
       return json.decode(value);
     }
@@ -49,13 +48,13 @@ class RedisService extends Service<String, Map<String, dynamic>> {
   Future<Map<String, dynamic>> create(Map<String, dynamic> data,
       [Map<String, dynamic> params]) async {
     String id;
-    if (data['id'] != null)
+    if (data['id'] != null) {
       id = data['id'] as String;
-    else {
+    } else {
       var keyVar = await respCommands.client
           .writeArrayOfBulk(['INCR', _applyPrefix('angel_redis:id')]);
       id = keyVar.payload.toString();
-      data = new Map<String, dynamic>.from(data)..['id'] = id;
+      data = Map<String, dynamic>.from(data)..['id'] = id;
     }
 
     await respCommands.set(_applyPrefix(id), json.encode(data));
@@ -73,7 +72,7 @@ class RedisService extends Service<String, Map<String, dynamic>> {
   @override
   Future<Map<String, dynamic>> update(String id, Map<String, dynamic> data,
       [Map<String, dynamic> params]) async {
-    data = new Map<String, dynamic>.from(data)..['id'] = id;
+    data = Map<String, dynamic>.from(data)..['id'] = id;
     await respCommands.set(_applyPrefix(id), json.encode(data));
     return data;
   }
@@ -88,10 +87,10 @@ class RedisService extends Service<String, Map<String, dynamic>> {
     var result = await client.writeArrayOfBulk(['EXEC']);
     var str = result.payload[0] as RespBulkString;
 
-    if (str.payload == null)
-      throw new AngelHttpException.notFound(
-          message: 'No record found for ID $id');
-    else
+    if (str.payload == null) {
+      throw AngelHttpException.notFound(message: 'No record found for ID $id');
+    } else {
       return json.decode(str.payload);
+    }
   }
 }
