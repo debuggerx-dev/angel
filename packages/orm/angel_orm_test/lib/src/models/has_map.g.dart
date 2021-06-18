@@ -67,7 +67,7 @@ class HasMapQuery extends Query<HasMap, HasMapQueryWhere> {
     if (row.every((x) => x == null)) {
       return Optional.empty();
     }
-    var model = HasMap(value: (row[0]), list: (row[1]));
+    var model = HasMap(value: (row[0] as Map), list: (row[1] as List));
     return Optional.of(model);
   }
 
