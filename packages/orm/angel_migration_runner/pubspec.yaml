@@ -19,3 +19,4 @@ dependencies:
   args: ^2.1.0
   charcode: ^1.2.0
   postgres: ^2.3.2
+  pedantic: ^1.11.0
