@@ -249,14 +249,14 @@ class AngelWebSocket {
         var jwt = action.params!['query']['jwt'] as String;
         AuthToken token;
 
-        token = AuthToken.validate(jwt, auth.hmac!);
-        var user = await auth.deserializer!(token.userId);
+        token = AuthToken.validate(jwt, auth.hmac);
+        var user = await auth.deserializer!(token.userId as Object);
         socket.request
           ..container!.registerSingleton<AuthToken>(token)
           ..container!.registerSingleton(user, as: user.runtimeType);
         socket._onAuthenticated.add(null);
         socket.send(authenticatedEvent,
-            {'token': token.serialize(auth.hmac!), 'data': user});
+            {'token': token.serialize(auth.hmac), 'data': user});
       } catch (e, st) {
         catchError(e, st, socket);
       }
