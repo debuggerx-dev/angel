@@ -4,11 +4,11 @@ library angel_mongo.model;
 @deprecated
 class Model {
   /// This instance's ID.
-  String id;
+  String? id;
 
   /// The time at which this instance was created.
-  DateTime createdAt;
+  DateTime? createdAt;
 
   /// The time at which this instance was last updated.
-  DateTime updatedAt;
+  DateTime? updatedAt;
 }
