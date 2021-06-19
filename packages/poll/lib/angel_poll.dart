@@ -41,12 +41,12 @@ class PollingService extends Service {
   final List _items = [];
   final List<StreamSubscription> _subs = [];
 
-  final StreamController _onIndexed = new StreamController(),
-      _onRead = new StreamController(),
-      _onCreated = new StreamController(),
-      _onModified = new StreamController(),
-      _onUpdated = new StreamController(),
-      _onRemoved = new StreamController();
+  final StreamController _onIndexed = StreamController(),
+      _onRead = StreamController(),
+      _onCreated = StreamController(),
+      _onModified = StreamController(),
+      _onUpdated = StreamController(),
+      _onRemoved = StreamController();
 
   Timer _timer;
 
@@ -80,8 +80,8 @@ class PollingService extends Service {
       this.asPaginated: false,
       EqualityBy compareId,
       this.compareItems: const MapEquality()})
-      : compareId = compareId ?? new EqualityBy((map) => map[idField ?? 'id']) {
-    _timer = new Timer.periodic(interval, (_) {
+      : compareId = compareId ?? EqualityBy((map) => map[idField ?? 'id']) {
+    _timer = Timer.periodic(interval, (_) {
       index().catchError(_onIndexed.addError);
     });
 
@@ -109,12 +109,12 @@ class PollingService extends Service {
   Future close() async {
     _timer.cancel();
     _subs.forEach((s) => s.cancel());
-    _onIndexed.close();
-    _onRead.close();
-    _onCreated.close();
-    _onModified.close();
-    _onUpdated.close();
-    _onRemoved.close();
+    await _onIndexed.close();
+    await _onRead.close();
+    await _onCreated.close();
+    await _onModified.close();
+    await _onUpdated.close();
+    await _onRemoved.close();
   }
 
   // TODO: To revisit this logic
@@ -140,9 +140,9 @@ class PollingService extends Service {
   }
 
   _handleUpdate(result) {
-    int index = -1;
+    var index = -1;
 
-    for (int i = 0; i < _items.length; i++) {
+    for (var i = 0; i < _items.length; i++) {
       if (compareId.equals(_items[i], result)) {
         index = i;
         break;
@@ -187,12 +187,12 @@ class PollingService extends Service {
 
   void _handleIndexed(data) {
     var items = asPaginated == true ? data['data'] : data;
-    bool changesComputed = false;
+    var changesComputed = false;
 
     if (checkForCreated != false) {
       var newItems = <int, dynamic>{};
 
-      for (int i = 0; i < items.length; i++) {
+      for (var i = 0; i < items.length; i++) {
         var item = items[i];
 
         if (!_items.any((i) => compareId.equals(i, item))) {
@@ -211,7 +211,7 @@ class PollingService extends Service {
     if (checkForRemoved != false) {
       var removedItems = <int, dynamic>{};
 
-      for (int i = 0; i < _items.length; i++) {
+      for (var i = 0; i < _items.length; i++) {
         var item = _items[i];
 
         if (!items.any((i) => compareId.equals(i, item))) {
@@ -231,7 +231,7 @@ class PollingService extends Service {
       var modifiedItems = <int, dynamic>{};
 
       for (var item in items) {
-        for (int i = 0; i < _items.length; i++) {
+        for (var i = 0; i < _items.length; i++) {
           var localItem = _items[i];
 
           if (compareId.equals(item, localItem)) {

@@ -11,7 +11,7 @@ final List<Map<String, String>> mjAlbums = [
   {'michael': 'jackson'}
 ];
 
-main() {
+void main() {
   TestClient client;
 
   setUp(() async {

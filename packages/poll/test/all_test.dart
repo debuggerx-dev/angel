@@ -11,8 +11,8 @@ void main() {
   PollingService pollingService;
 
   setUp(() async {
-    var app = new srv.Angel();
-    app.logger = new Logger.detached('angel_poll')
+    var app = srv.Angel();
+    app.logger = Logger.detached('angel_poll')
       ..onRecord.listen((rec) {
         print(rec);
         if (rec.error != null) {
@@ -23,14 +23,14 @@ void main() {
 
     store = app.use(
       '/api/todos',
-      new srv.MapService(
+      srv.MapService(
         autoIdAndDateFields: false,
       ),
     );
 
     client = await connectTo(app);
 
-    pollingService = new PollingService(
+    pollingService = PollingService(
       client.service('api/todos'),
       const Duration(milliseconds: 100),
     );
@@ -43,9 +43,9 @@ void main() {
     StreamQueue onCreated, onModified, onRemoved;
 
     setUp(() async {
-      onCreated = new StreamQueue(pollingService.onCreated);
-      onModified = new StreamQueue(pollingService.onModified);
-      onRemoved = new StreamQueue(pollingService.onRemoved);
+      onCreated = StreamQueue(pollingService.onCreated);
+      onModified = StreamQueue(pollingService.onModified);
+      onRemoved = StreamQueue(pollingService.onRemoved);
 
       created = await store.create({
         'id': '0',
@@ -80,7 +80,7 @@ void main() {
 
       var result = await onModified.next;
       print(result);
-      expect(result, new Map.from(created)..['text'] = 'go to school');
+      expect(result, Map.from(created)..['text'] = 'go to school');
     });
 
     test('manual modify', () async {
@@ -91,7 +91,7 @@ void main() {
 
       var result = await onModified.next;
       print(result);
-      expect(result, new Map.from(created)..['text'] = 'eat');
+      expect(result, Map.from(created)..['text'] = 'eat');
     });
 
     test('fires removed', () async {

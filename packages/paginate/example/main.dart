@@ -1,8 +1,8 @@
 import 'package:angel_paginate/angel_paginate.dart';
 
-main() {
+void main() {
   var iterable = [1, 2, 3, 4];
-  var p = new Paginator(iterable);
+  var p = Paginator(iterable);
 
   // Get the current page (default: page 1)
   var page = p.current;
