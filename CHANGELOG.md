@@ -50,7 +50,13 @@
 * Migrated graphql_server to 2.0.0 (9/10 tests passed)
 * Migrated graphql_generator to 2.0.0 (0/0 tests passed)
 * Migrated data_loader to 2.0.0 (7/7 tests passed)
-* Migrated angel_graphql to 2.0.0 (0/0 tests passed)
+* Migrated angel_mongo to 3.0.0 (0/0 tests passed)
+* Migrated angel_orm_mysql to 2.0.0 (0/0 tests passed)
+* Migrated angel_orm_service to 2.0.0 (0/0 tests passed)
+* Migrated body_parser to 2.0.0 (11/11 tests passed)
+* Migrated angel_markdown to 3.0.0 (0/0 tests passed)
+* Migrated angel_jinja to 2.0.0 (0/0 tests passed)
+* Migrated angel_html to 3.0.0 (1/3 tests passed)
 
 # 3.0.0 (Non NNBD)
 * Changed Dart SDK requirements for all packages to ">=2.10.0 <3.0.0"
