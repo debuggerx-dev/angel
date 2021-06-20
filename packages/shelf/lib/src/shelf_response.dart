@@ -12,7 +12,7 @@ class ShelfResponseContext extends ResponseContext<ShelfResponseContext> {
   final StreamController<List<int>> _ctrl = StreamController();
   bool _isOpen = true;
   bool _isDetached = false;
-  bool _wasClosedByHandler = false;
+  final bool _wasClosedByHandler = false;
   bool _handlersAreDone = false;
 
   ShelfResponseContext(this.app);
@@ -53,9 +53,9 @@ class ShelfResponseContext extends ResponseContext<ShelfResponseContext> {
     return __allowedEncodings ??= correspondingRequest!.headers
         .value('accept-encoding')
         ?.split(',')
-        ?.map((s) => s.trim())
-        ?.where((s) => s.isNotEmpty)
-        ?.map((str) {
+        .map((s) => s.trim())
+        .where((s) => s.isNotEmpty)
+        .map((str) {
       // Ignore quality specifications in accept-encoding
       // ex. gzip;q=0.8
       if (!str.contains(';')) return str;
