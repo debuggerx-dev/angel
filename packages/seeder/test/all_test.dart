@@ -1,12 +1,14 @@
 import 'dart:async';
 
 import 'package:angel_framework/angel_framework.dart';
+import 'package:angel_container/mirrors.dart';
 import 'package:angel_seeder/angel_seeder.dart';
 import 'package:test/test.dart';
 
 void main() {
   test('create one', () async {
-    var app = Angel()..use('/todos', TodoService());
+    var app = Angel(reflector: MirrorsReflector())
+      ..use('/todos', TodoService());
 
     await app.configure(seed(
         'todos',
