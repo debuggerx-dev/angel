@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:angel_framework/angel_framework.dart';
 import 'package:shelf/shelf.dart' as shelf;
+import 'package:shelf/shelf.dart';
 import 'shelf_request.dart';
 import 'shelf_response.dart';
 
@@ -23,6 +24,8 @@ class AngelShelf extends Driver<shelf.Request, ShelfResponseContext?,
       return true;
     });
   }
+
+  Future<Stream<Request>> aaa(dynamic param1, int param2) {}
 
   @override
   Future<void> close() {

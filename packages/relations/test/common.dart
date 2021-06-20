@@ -23,16 +23,16 @@ class CustomMapService extends Service {
   }
 
   @override
-  index([params]) async => tailor(_items, params).toList();
+  Future<List<Map>> index([params]) async => tailor(_items, params).toList();
 
   @override
-  read(id, [Map params]) async {
+  Future<Map> read(id, [Map params]) async {
     return tailor(_items, params).firstWhere((m) => m['id'] == id,
-        orElse: () => throw new AngelHttpException.notFound());
+        orElse: () => throw AngelHttpException.notFound());
   }
 
   @override
-  create(data, [params]) async {
+  Future<Map> create(data, [params]) async {
     Map d = data is Map ? data : jsonDecode(data);
     d['id'] = _items.length.toString();
     _items.add(d);

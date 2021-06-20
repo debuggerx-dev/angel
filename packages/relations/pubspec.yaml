@@ -13,5 +13,9 @@ dependencies:
       path: packages/framework
 dev_dependencies:
   angel_seeder:
-    path: ../seeder
-  test: ^1.15.7
+   git: 
+      url: https://github.com/dukefirehawk/angel.git
+      ref: sdk-2.12.x_nnbd
+      path: packages/seeder
+  test: ^1.17.8
+  pedantic: ^1.11.1

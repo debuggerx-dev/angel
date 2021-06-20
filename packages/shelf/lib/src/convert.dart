@@ -47,7 +47,7 @@ Future<shelf.Request> convertRequest(RequestContext req, ResponseContext res,
       scheduleMicrotask(() => ctrl.local.stream.pipe(res));
       hijack(ctrl.foreign);
     } catch (e, st) {
-      app!.logger
+      app?.logger
           ?.severe('An error occurred while hijacking a shelf request', e, st);
     }
   };

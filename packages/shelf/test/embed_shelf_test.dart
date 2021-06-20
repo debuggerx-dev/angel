@@ -43,8 +43,8 @@ void main() {
           sink.close();
           print('b');
         });
-      } else if (request.url.path == 'throw') {
-        return null;
+        //} else if (request.url.path == 'throw') {
+        //  return null;
       } else {
         return shelf.Response.ok('Request for "${request.url}"');
       }

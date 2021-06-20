@@ -4,7 +4,7 @@ import 'package:angel_seeder/angel_seeder.dart';
 import 'package:test/test.dart';
 import 'common.dart';
 
-main() {
+void main() {
   Angel app;
 
   setUp(() async {

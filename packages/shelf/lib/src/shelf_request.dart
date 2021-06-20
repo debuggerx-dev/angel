@@ -66,7 +66,7 @@ class ShelfRequestContext extends RequestContext {
 
   @override
   // TODO: implement remoteAddress
-  InternetAddress get remoteAddress => null;
+  InternetAddress get remoteAddress => InternetAddress.loopbackIPv4;
 
   @override
   // TODO: implement session

@@ -24,29 +24,25 @@ HookedServiceEventListener hasMany(Pattern servicePath,
     if (ref == null) throw noService(servicePath);
 
     _getLocalKey(obj) {
-      if (getLocalKey != null)
+      if (getLocalKey != null) {
         return getLocalKey(obj);
-      else if (obj is Map)
+      } else if (obj is Map) {
         return obj[localKey ?? 'id'];
-      //TODO: Undefined class
-      //else if (obj is Extensible)
-      //  return obj.properties[localKey ?? 'id'];
-      else if (localKey == null || localKey == 'id')
+      } else if (localKey == null || localKey == 'id') {
         return obj.id;
-      else
-        return reflect(obj).getField(new Symbol(localKey ?? 'id')).reflectee;
+      } else {
+        return reflect(obj).getField(Symbol(localKey ?? 'id')).reflectee;
+      }
     }
 
     _assignForeignObjects(foreign, obj) {
-      if (assignForeignObjects != null)
+      if (assignForeignObjects != null) {
         return assignForeignObjects(foreign, obj);
-      else if (obj is Map)
+      } else if (obj is Map) {
         obj[foreignName] = foreign;
-      //TODO: Undefined class
-      //else if (obj is Extensible)
-      //  obj.properties[foreignName] = foreign;
-      else
-        reflect(obj).setField(new Symbol(foreignName), foreign);
+      } else {
+        reflect(obj).setField(Symbol(foreignName), foreign);
+      }
     }
 
     _normalize(obj) async {
@@ -66,7 +62,8 @@ HookedServiceEventListener hasMany(Pattern servicePath,
 
     if (e.result is Iterable) {
       await Future.wait(e.result.map(_normalize));
-    } else
+    } else {
       await _normalize(e.result);
+    }
   };
 }
