@@ -28,9 +28,10 @@ Future Function(Angel app) mustache(Directory viewsDirectory,
         return viewer.Template(template, name: name);
       };
 
-      var viewTemplate = await (cache.getView(name, app) as FutureOr<String>);
+      var viewTemplate = await (cache.getView(name, app));
       //return await render(viewTemplate, data ?? {}, partial: partialsProvider);
-      var t = viewer.Template(viewTemplate, partialResolver: partialsProvider);
+      var t = viewer.Template(viewTemplate ?? '',
+          partialResolver: partialsProvider);
       return t.renderString(data ?? {});
     };
   };

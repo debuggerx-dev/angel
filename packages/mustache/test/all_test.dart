@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:angel_framework/angel_framework.dart';
 import 'package:angel_mustache/angel_mustache.dart';
+import 'package:file/file.dart';
 import 'package:file/local.dart';
 import 'package:test/test.dart';
 
@@ -20,7 +21,7 @@ void main() async {
     expect(Future(() async {
       var fails = await angel.viewGenerator!('fail', {'this_should': 'fail'});
       print(fails);
-    }), throwsA);
+    }), throwsA(isA<FileSystemException>()));
   });
 
   test('partials', () async {

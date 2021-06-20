@@ -22,7 +22,10 @@ class MustacheViewCache {
       }
     }
 
-    var viewFile = context!.resolveView(viewName);
+    var viewFile = context?.resolveView(viewName);
+    if (viewFile == null) {
+      throw FileSystemException('View "$viewName" was not found.', 'null');
+    }
 
     if (viewFile.existsSync()) {
       var viewTemplate = await viewFile.readAsString();
