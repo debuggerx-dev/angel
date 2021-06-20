@@ -11,7 +11,7 @@ void main() async {
 
   setUp(() async {
     connection = await connectSocket('localhost');
-    service = RedisService(RespCommands(RespClient(connection)),
+    service = RedisService(RespCommandsTier2(RespClient(connection)),
         prefix: 'angel_redis_test');
   });
 

@@ -59,6 +59,10 @@
 * Migrated angel_html to 3.0.0 (1/3 tests passed)
 * Migrated angel_mustache to 2.0.0 (3/3 tests passed)
 * Migrated angel_paginate to 3.0.0 (18/18 tests passed)
+* Migrated angel_poll to 2.0.0 (0/5 tests passed)
+* Migrated angel_redis to 2.0.0 (0/0 tests passed)
+* Migrated angel_shelf to 2.0.0 (0/0 tests passed)
+* Migrated angel_user_agent to 2.0.0 (0/0 tests passed)
 
 
 # 3.0.0 (Non NNBD)

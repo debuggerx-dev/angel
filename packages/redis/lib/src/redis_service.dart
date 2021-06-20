@@ -22,14 +22,22 @@ class RedisService extends Service<String, Map<String, dynamic>> {
   Future<List<Map<String, dynamic>>> index(
       [Map<String, dynamic> params]) async {
     var result =
-        await respCommands.client.writeArrayOfBulk(['KEYS', _applyPrefix('*')]);
+        //await respCommands.client.writeArrayOfBulk(['KEYS', _applyPrefix('*')]);
+        await respCommands.tier1.tier0.execute(['KEYS', _applyPrefix('*')]);
     var keys = result.payload.map((RespType s) => s.payload) as Iterable;
     if (keys.isEmpty) return [];
-    result = await respCommands.client.writeArrayOfBulk(['MGET']..addAll(keys));
-    return result.payload
-        .map<Map<String, dynamic>>(
-            (RespType s) => json.decode(s.payload) as Map<String, dynamic>)
-        .toList();
+    //result = await respCommands.client.writeArrayOfBulk(['MGET']..addAll(keys));
+    result = await respCommands.tier1.tier0.execute(['MGET', ...keys]);
+
+    if (result.isArray) {
+      return (result as List<RespType>)
+          .map<Map<String, dynamic>>((RespType s) =>
+              json.decode(s.payload as String) as Map<String, dynamic>)
+          .toList();
+    } else {
+      // TODO: To be reviewed for handling none array objects
+      return [json.decode(result.payload as String) as Map<String, dynamic>];
+    }
   }
 
   @override
@@ -40,7 +48,7 @@ class RedisService extends Service<String, Map<String, dynamic>> {
     if (value == null) {
       throw AngelHttpException.notFound(message: 'No record found for ID $id');
     } else {
-      return json.decode(value);
+      return json.decode(value) as Map<String, dynamic>;
     }
   }
 
@@ -51,8 +59,8 @@ class RedisService extends Service<String, Map<String, dynamic>> {
     if (data['id'] != null) {
       id = data['id'] as String;
     } else {
-      var keyVar = await respCommands.client
-          .writeArrayOfBulk(['INCR', _applyPrefix('angel_redis:id')]);
+      var keyVar = await respCommands.tier1.tier0
+          .execute(['INCR', _applyPrefix('angel_redis:id')]);
       id = keyVar.payload.toString();
       data = Map<String, dynamic>.from(data)..['id'] = id;
     }
@@ -80,17 +88,17 @@ class RedisService extends Service<String, Map<String, dynamic>> {
   @override
   Future<Map<String, dynamic>> remove(String id,
       [Map<String, dynamic> params]) async {
-    var client = respCommands.client;
-    await client.writeArrayOfBulk(['MULTI']);
-    await client.writeArrayOfBulk(['GET', _applyPrefix(id)]);
-    await client.writeArrayOfBulk(['DEL', _applyPrefix(id)]);
-    var result = await client.writeArrayOfBulk(['EXEC']);
+    var client = respCommands.tier1.tier0;
+    await client.execute(['MULTI']);
+    await client.execute(['GET', _applyPrefix(id)]);
+    await client.execute(['DEL', _applyPrefix(id)]);
+    var result = await client.execute(['EXEC']);
     var str = result.payload[0] as RespBulkString;
 
     if (str.payload == null) {
       throw AngelHttpException.notFound(message: 'No record found for ID $id');
     } else {
-      return json.decode(str.payload);
+      return json.decode(str.payload) as Map<String, dynamic>;
     }
   }
 }
