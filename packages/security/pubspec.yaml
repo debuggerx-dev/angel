@@ -4,14 +4,14 @@ description: Angel infrastructure for improving security, rate limiting, and mor
 homepage: https://github.com/angel-dart/security
 publish_to: none
 environment: 
-  sdk: ">=2.10.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 dependencies: 
   angel_framework:
     git: 
       url: https://github.com/dukefirehawk/angel.git
       ref: sdk-2.12.x_nnbd
       path: packages/framework
-  crypto: ^3.0.0
+  crypto: ^3.0.1
 dev_dependencies: 
   angel_auth:
     git: 
@@ -43,5 +43,5 @@ dev_dependencies:
       url: https://github.com/dukefirehawk/angel.git
       ref: sdk-2.12.x_nnbd
       path: packages/pretty_logging
-  pedantic: ^1.11.0
-  test: ^1.15.7
+  pedantic: ^1.11.1
+  test: ^1.17.8
