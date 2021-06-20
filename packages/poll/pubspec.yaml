@@ -3,7 +3,7 @@ version: 2.0.0
 description: package:angel_client support for "realtime" interactions with Angel via long polling.
 publish_to: none
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 homepage: https://github.com/angel-dart/poll
 dependencies:
   angel_client: # ^1.0.0

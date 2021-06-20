@@ -211,15 +211,15 @@ class BaseAngelService<Id, Data> extends Service<Id, Data?> {
   final http.BaseClient? client;
   final AngelDeserializer<Data>? deserializer;
 
-  final StreamController<List<Data?>> _onIndexed = StreamController();
-  final StreamController<Data?> _onRead = StreamController(),
+  final StreamController<List<Data>> _onIndexed = StreamController();
+  final StreamController<Data> _onRead = StreamController(),
       _onCreated = StreamController(),
       _onModified = StreamController(),
       _onUpdated = StreamController(),
       _onRemoved = StreamController();
 
   @override
-  Stream<List<Data?>> get onIndexed => _onIndexed.stream;
+  Stream<List<Data>> get onIndexed => _onIndexed.stream;
 
   @override
   Stream<Data?> get onRead => _onRead.stream;
@@ -271,7 +271,7 @@ class BaseAngelService<Id, Data> extends Service<Id, Data?> {
   }
 
   @override
-  Future<List<Data?>?> index([Map<String, dynamic>? params]) async {
+  Future<List<Data>> index([Map<String, dynamic>? params]) async {
     var url = baseUrl.replace(queryParameters: _buildQuery(params));
     var response = await app.sendUnstreamed('GET', url, _readHeaders);
 
@@ -285,7 +285,7 @@ class BaseAngelService<Id, Data> extends Service<Id, Data?> {
       }
 
       var v = json.decode(response.body) as List;
-      var r = v.map(deserialize).toList();
+      var r = v.map(deserialize).whereType<Data>().toList();
       _onIndexed.add(r);
       return r;
     } catch (e, st) {
@@ -296,7 +296,7 @@ class BaseAngelService<Id, Data> extends Service<Id, Data?> {
       }
     }
 
-    return null;
+    return [];
   }
 
   @override
@@ -317,7 +317,9 @@ class BaseAngelService<Id, Data> extends Service<Id, Data?> {
       }
 
       var r = deserialize(json.decode(response.body));
-      _onRead.add(r);
+      if (r != null) {
+        _onRead.add(r);
+      }
       return r;
     } catch (e, st) {
       if (_onRead.hasListener) {
@@ -346,7 +348,9 @@ class BaseAngelService<Id, Data> extends Service<Id, Data?> {
       }
 
       var r = deserialize(json.decode(response.body));
-      _onCreated.add(r);
+      if (r != null) {
+        _onCreated.add(r);
+      }
       return r;
     } catch (e, st) {
       if (_onCreated.hasListener) {
@@ -378,7 +382,9 @@ class BaseAngelService<Id, Data> extends Service<Id, Data?> {
       }
 
       var r = deserialize(json.decode(response.body));
-      _onModified.add(r);
+      if (r != null) {
+        _onModified.add(r);
+      }
       return r;
     } catch (e, st) {
       if (_onModified.hasListener) {
@@ -410,7 +416,9 @@ class BaseAngelService<Id, Data> extends Service<Id, Data?> {
       }
 
       var r = deserialize(json.decode(response.body));
-      _onUpdated.add(r);
+      if (r != null) {
+        _onUpdated.add(r);
+      }
       return r;
     } catch (e, st) {
       if (_onUpdated.hasListener) {
@@ -441,7 +449,9 @@ class BaseAngelService<Id, Data> extends Service<Id, Data?> {
       }
 
       var r = deserialize(json.decode(response.body));
-      _onRemoved.add(r);
+      if (r != null) {
+        _onRemoved.add(r);
+      }
       return r;
     } catch (e, st) {
       if (_onRemoved.hasListener) {

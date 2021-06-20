@@ -180,7 +180,7 @@ abstract class Service<Id, Data> {
   Future close();
 
   /// Retrieves all resources.
-  Future<List<Data>?> index([Map<String, dynamic>? params]);
+  Future<List<Data>> index([Map<String, dynamic>? params]);
 
   /// Retrieves the desired resource.
   Future<Data> read(Id id, [Map<String, dynamic>? params]);
@@ -225,7 +225,7 @@ class _MappedService<Id, Data, U> extends Service<Id, U> {
 
   @override
   Future<List<U>> index([Map<String, dynamic>? params]) {
-    return inner.index(params).then((l) => l!.map(encoder).toList());
+    return inner.index(params).then((l) => l.map(encoder) as List<U>);
   }
 
   @override
