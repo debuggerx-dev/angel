@@ -67,6 +67,7 @@
 * Migrated angel_security to 2.0.0 (0/1 tests passed)
 * Migrated angel_sembast to 2.0.0 (10/10 tests passed)
 * Migrated angel_sync to 3.0.0 (0/1 tests passed)
+* Migrated angel_typed_service to 3.0.0 (4/4 tests passed)
 * Migrated angel_shelf to 2.0.0 (0/1 tests passed)
 * Migrated angel_user_agent to 2.0.0 (0/0 tests passed)
 
