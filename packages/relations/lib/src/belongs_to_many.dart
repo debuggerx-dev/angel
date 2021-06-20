@@ -12,14 +12,14 @@ import 'no_service.dart';
 /// * [foreignKey]: `userId`
 /// * [localKey]: `id`
 HookedServiceEventListener belongsToMany(Pattern servicePath,
-    {String as,
-    String foreignKey,
-    String localKey,
-    getForeignKey(obj),
-    assignForeignObject(List foreign, obj)}) {
+    {String? as,
+    String? foreignKey,
+    String? localKey,
+    Function(dynamic obj)? getForeignKey,
+    Function(dynamic foreign, dynamic obj)? assignForeignObject}) {
   var localId = localKey;
   var foreignName =
-      as?.isNotEmpty == true ? as : pluralize.plural(servicePath.toString());
+      as?.isNotEmpty == true ? as! : pluralize.plural(servicePath.toString());
 
   localId ??= foreignName + 'Id';
 
@@ -41,7 +41,7 @@ HookedServiceEventListener belongsToMany(Pattern servicePath,
 
     dynamic _assignForeignObject(foreign, obj) {
       if (assignForeignObject != null) {
-        return assignForeignObject(foreign as List, obj);
+        return assignForeignObject(foreign as List?, obj);
       } else if (obj is Map) {
         obj[foreignName] = foreign;
       } else {
@@ -66,7 +66,8 @@ HookedServiceEventListener belongsToMany(Pattern servicePath,
     }
 
     if (e.result is Iterable) {
-      await Future.wait(e.result.map(_normalize));
+      //await Future.wait(e.result.map(_normalize));
+      await e.result.map(_normalize);
     } else {
       await _normalize(e.result);
     }

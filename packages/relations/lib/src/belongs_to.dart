@@ -12,14 +12,14 @@ import 'no_service.dart';
 /// * [localKey]: `userId`
 /// * [foreignKey]: `id`
 HookedServiceEventListener belongsTo(Pattern servicePath,
-    {String as,
-    String foreignKey,
-    String localKey,
-    getForeignKey(obj),
-    assignForeignObject(foreign, obj)}) {
+    {String? as,
+    String? foreignKey,
+    String? localKey,
+    Function(dynamic obj)? getForeignKey,
+    Function(dynamic foreign, dynamic obj)? assignForeignObject}) {
   var localId = localKey;
   var foreignName =
-      as?.isNotEmpty == true ? as : pluralize.singular(servicePath.toString());
+      as?.isNotEmpty == true ? as! : pluralize.singular(servicePath.toString());
 
   localId ??= foreignName + 'Id';
 
@@ -27,7 +27,7 @@ HookedServiceEventListener belongsTo(Pattern servicePath,
     var ref = e.getService(servicePath);
     if (ref == null) throw noService(servicePath);
 
-    _getForeignKey(obj) {
+    dynamic _getForeignKey(obj) {
       if (getForeignKey != null) {
         return getForeignKey(obj);
       } else if (obj is Map) {
@@ -39,7 +39,7 @@ HookedServiceEventListener belongsTo(Pattern servicePath,
       }
     }
 
-    _assignForeignObject(foreign, obj) {
+    dynamic _assignForeignObject(foreign, obj) {
       if (assignForeignObject != null) {
         return assignForeignObject(foreign, obj);
       } else if (obj is Map) {
@@ -49,7 +49,7 @@ HookedServiceEventListener belongsTo(Pattern servicePath,
       }
     }
 
-    _normalize(obj) async {
+    Future _normalize(obj) async {
       if (obj != null) {
         var id = await _getForeignKey(obj);
         var indexed = await ref.index({
@@ -66,7 +66,8 @@ HookedServiceEventListener belongsTo(Pattern servicePath,
     }
 
     if (e.result is Iterable) {
-      await Future.wait(e.result.map(_normalize));
+      //await Future.wait(e.result.map(_normalize));
+      await e.result.map(_normalize);
     } else {
       await _normalize(e.result);
     }

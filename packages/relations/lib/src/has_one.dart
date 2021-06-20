@@ -12,11 +12,11 @@ import 'no_service.dart';
 /// * [foreignKey]: `userId`
 /// * [localKey]: `id`
 HookedServiceEventListener hasOne(Pattern servicePath,
-    {String as,
-    String foreignKey,
-    String localKey,
-    getLocalKey(obj),
-    assignForeignObject(foreign, obj)}) {
+    {String? as,
+    String? foreignKey,
+    String? localKey,
+    Function(dynamic obj)? getLocalKey,
+    Function(dynamic foreign, dynamic obj)? assignForeignObject}) {
   return (HookedServiceEvent e) async {
     var ref = e.getService(servicePath);
     var foreignName = as?.isNotEmpty == true
@@ -24,7 +24,7 @@ HookedServiceEventListener hasOne(Pattern servicePath,
         : pluralize.singular(servicePath.toString());
     if (ref == null) throw noService(servicePath);
 
-    _getLocalKey(obj) {
+    dynamic _getLocalKey(obj) {
       if (getLocalKey != null) {
         return getLocalKey(obj);
       } else if (obj is Map) {
@@ -32,21 +32,21 @@ HookedServiceEventListener hasOne(Pattern servicePath,
       } else if (localKey == null || localKey == 'id') {
         return obj.id;
       } else {
-        return reflect(obj).getField(Symbol(localKey ?? 'id')).reflectee;
+        return reflect(obj).getField(Symbol(localKey)).reflectee;
       }
     }
 
-    _assignForeignObject(foreign, obj) {
+    dynamic _assignForeignObject(foreign, obj) {
       if (assignForeignObject != null) {
         return assignForeignObject(foreign, obj);
       } else if (obj is Map) {
         obj[foreignName] = foreign;
       } else {
-        reflect(obj).setField(Symbol(foreignName), foreign);
+        reflect(obj).setField(Symbol(foreignName!), foreign);
       }
     }
 
-    _normalize(obj) async {
+    Future _normalize(obj) async {
       if (obj != null) {
         var id = await _getLocalKey(obj);
 
@@ -54,7 +54,7 @@ HookedServiceEventListener hasOne(Pattern servicePath,
           'query': {foreignKey ?? 'userId': id}
         });
 
-        if (indexed == null || indexed is! List || indexed.isNotEmpty != true) {
+        if (indexed is! List || indexed.isNotEmpty != true) {
           await _assignForeignObject(null, obj);
         } else {
           var child = indexed.first;
@@ -64,7 +64,8 @@ HookedServiceEventListener hasOne(Pattern servicePath,
     }
 
     if (e.result is Iterable) {
-      await Future.wait(e.result.map(_normalize));
+      //await Future.wait(e.result.map(_normalize));
+      await e.result.map(_normalize);
     } else {
       await _normalize(e.result);
     }

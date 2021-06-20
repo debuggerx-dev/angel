@@ -4,7 +4,7 @@ description: Database-agnostic relations between Angel services.
 homepage: "https://github.com/angel-dart/relations.git"
 publish_to: none
 environment:
-  sdk: ">=2.10.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 dependencies: 
   angel_framework:
    git: 

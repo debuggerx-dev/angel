@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 import 'common.dart';
 
 void main() {
-  Angel app;
+  late Angel app;
 
   setUp(() async {
     app = Angel()..use('/authors', MapService())..use('/books', MapService());
@@ -31,15 +31,15 @@ void main() {
   });
 
   test('index', () async {
-    var authors = await app.findService('authors').index();
+    var authors = await app.findService('authors')!.index();
     print(authors);
 
     expect(authors, allOf(isList, isNotEmpty));
 
-    for (Map author in authors) {
+    for (Map author in authors.whereType<Map>()) {
       expect(author.keys, contains('book'));
 
-      Map book = author['book'];
+      var book = author['book'] as Map;
       print('Author: $author');
       print('Book: $book');
       expect(book['authorId'], equals(author['id']));
@@ -48,7 +48,7 @@ void main() {
 
   test('create', () async {
     var tolstoy = await app
-        .findService('authors')
+        .findService('authors')!
         .create(Author(name: 'Leo Tolstoy').toJson());
 
     print(tolstoy);
