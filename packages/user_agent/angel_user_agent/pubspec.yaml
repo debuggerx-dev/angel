@@ -12,3 +12,4 @@ dependencies:
       ref: sdk-2.12.x_nnbd
       path: packages/framework
   user_agent: ^2.0.0
+  pedantic: ^1.11.0
