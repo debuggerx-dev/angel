@@ -1,7 +1,7 @@
 /// Efficiently paginates collections of items in an object-oriented manner.
 class Paginator<T> {
   final Map<int, PaginationResult<T>> _cache = {};
-  PaginationResult<T> _current;
+  PaginationResult<T>? _current;
   int _page = 0;
 
   /// The collection of items to be paginated.
@@ -37,7 +37,7 @@ class Paginator<T> {
   /// Fetches the current page. This will be cached until [back] or [next] is called.
   ///
   /// If [useCache] is `true` (default), then computations will be cached even after the page changes.
-  PaginationResult<T> get current {
+  PaginationResult<T>? get current {
     if (_current != null) {
       return _current;
     } else {
@@ -47,7 +47,8 @@ class Paginator<T> {
 
   PaginationResult<T> _computePage() {
     var len = _items.length;
-    var it = _items.skip(_page * (itemsPerPage ?? 5));
+    //var it = _items.skip(_page * (itemsPerPage ?? 5));
+    var it = _items.skip(_page * (itemsPerPage));
     var offset = len - it.length;
     it = it.take(itemsPerPage);
     var last = _lastPage();
@@ -113,39 +114,39 @@ class Paginator<T> {
 abstract class PaginationResult<T> {
   factory PaginationResult.fromMap(Map<String, dynamic> map) =>
       _PaginationResultImpl((map['data'] as List).cast<T>(),
-          currentPage: map['current_page'] as int,
-          endIndex: map['end_index'] as int,
-          itemsPerPage: map['items_per_page'] as int,
-          nextPage: map['next_page'] as int,
-          previousPage: map['previous_page'] as int,
-          startIndex: map['start_index'] as int,
-          total: map['total'] as int);
+          currentPage: map['current_page'] as int?,
+          endIndex: map['end_index'] as int?,
+          itemsPerPage: map['items_per_page'] as int?,
+          nextPage: map['next_page'] as int?,
+          previousPage: map['previous_page'] as int?,
+          startIndex: map['start_index'] as int?,
+          total: map['total'] as int?);
 
-  List<T> get data;
+  Iterable<T> get data;
 
-  int get currentPage;
+  int? get currentPage;
 
-  int get previousPage;
+  int? get previousPage;
 
-  int get nextPage;
+  int? get nextPage;
 
-  int get itemsPerPage;
+  int? get itemsPerPage;
 
-  int get total;
+  int? get total;
 
-  int get startIndex;
+  int? get startIndex;
 
-  int get endIndex;
+  int? get endIndex;
 
   Map<String, dynamic> toJson();
 }
 
 class _PaginationResultImpl<T> implements PaginationResult<T> {
-  final List<T> _data;
-  List<T> _cachedData;
+  final Iterable<T> _data;
+  Iterable<T>? _cachedData;
 
   @override
-  final int currentPage;
+  final int? currentPage;
 
   _PaginationResultImpl(this._data,
       {this.currentPage,
@@ -157,25 +158,25 @@ class _PaginationResultImpl<T> implements PaginationResult<T> {
       this.total});
 
   @override
-  List<T> get data => _cachedData ?? (_cachedData = List<T>.from(_data));
+  Iterable<T> get data => _cachedData ?? (_cachedData = List<T>.from(_data));
 
   @override
-  final int endIndex;
+  final int? endIndex;
 
   @override
-  final int itemsPerPage;
+  final int? itemsPerPage;
 
   @override
-  final int nextPage;
+  final int? nextPage;
 
   @override
-  final int previousPage;
+  final int? previousPage;
 
   @override
-  final int startIndex;
+  final int? startIndex;
 
   @override
-  final int total;
+  final int? total;
 
   @override
   Map<String, dynamic> toJson() {
