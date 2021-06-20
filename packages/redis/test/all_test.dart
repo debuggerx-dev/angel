@@ -6,8 +6,8 @@ import 'package:resp_client/resp_server.dart';
 import 'package:test/test.dart';
 
 void main() async {
-  RespServerConnection connection;
-  RedisService service;
+  late RespServerConnection connection;
+  late RedisService service;
 
   setUp(() async {
     connection = await connectSocket('localhost');
@@ -37,7 +37,7 @@ void main() async {
 
   test('create without id', () async {
     var input = {'bar': 'baz'};
-    var output = await service.create(input);
+    var output = await (service.create(input));
     print(output);
     expect(output.keys, contains('id'));
     expect(output, containsPair('bar', 'baz'));

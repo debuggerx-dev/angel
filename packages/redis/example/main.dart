@@ -12,7 +12,7 @@ void main() async {
   await service.create({'id': 'a', 'hello': 'world'});
 
   // Read it...
-  var read = await service.read('a');
+  var read = await (service.read('a'));
   print(read['hello']);
 
   // Delete it.

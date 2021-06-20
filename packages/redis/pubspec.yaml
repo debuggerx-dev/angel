@@ -4,7 +4,7 @@ description: An Angel service provider for Redis. Works well for caching volatil
 homepage: https://github.com/angel-dart/redis
 publish_to: none
 environment:
-  sdk: ">=2.10.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 dependencies:
   angel_framework:
    git: 
