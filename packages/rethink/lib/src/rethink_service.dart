@@ -93,7 +93,8 @@ class RethinkService extends Service {
       if (result['generated_keys'].length == 1) {
         return await read(result['generated_keys'].first);
       }
-      return await Future.wait(result['generated_keys'].map(read));
+      //return await Future.wait(result['generated_keys'].map(read));
+      return await result['generated_keys'].map(read);
     } else {
       return result;
     }
@@ -127,7 +128,8 @@ class RethinkService extends Service {
   }
 
   Future listenToQuery(RqlQuery query, HookedService hookedService) async {
-    Feed feed = await query.changes({'include_types': true}).run(connection);
+    var feed =
+        await query.changes({'include_types': true}).run(connection) as Feed;
 
     feed.listen((Map event) {
       var type = event['type']?.toString();
