@@ -50,6 +50,7 @@
 * Migrated graphql_server to 2.0.0 (9/10 tests passed)
 * Migrated graphql_generator to 2.0.0 (0/0 tests passed)
 * Migrated data_loader to 2.0.0 (7/7 tests passed)
+* Migrated angel_graphql to 2.0.0 (0/0 tests passed)
 * Migrated angel_mongo to 3.0.0 (0/0 tests passed)
 * Migrated angel_orm_mysql to 2.0.0 (0/0 tests passed)
 * Migrated angel_orm_service to 2.0.0 (0/0 tests passed)
